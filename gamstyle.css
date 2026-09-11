@@ -1,0 +1,714 @@
+/* =========================
+   GLOBAL
+========================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: white;
+
+    background: #1c1917;
+    overflow-x: hidden;
+}
+
+
+/* =========================
+   MAIN CONTAINER
+========================= */
+
+.game-container {
+    width: 950px;
+    max-width: 95%;
+
+    padding: 30px;
+
+    position: relative;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.game-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.game-header h1 {
+    font-family: 'Bungee';
+    font-size: 50px;
+    letter-spacing: 3px;
+
+    color: #FFD166;
+
+    
+        
+}
+
+.game-header h1 span {
+    color: #EF476F;
+}
+
+
+
+
+/* =========================
+   PLAYER AREA
+========================= */
+
+.players {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 15px;
+
+    margin-bottom: 20px;
+}
+
+.player-card {
+    flex: 1;
+
+    min-height: 90px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 15px 20px;
+
+    border-radius: 18px;
+
+   background: #242424;
+    border: 2px solid #3a3a3a;
+    border-radius: 18px;
+
+    
+
+    backdrop-filter: blur(12px);
+
+    transition: 0.3s ease;
+}
+
+
+/* Active player */
+
+.player-card.active {
+    border-color: #48e0ff;
+
+    box-shadow:
+        0 0 15px rgba(72,224,255,0.35),
+        inset 0 0 20px rgba(72,224,255,0.08);
+
+    transform: translateY(-3px);
+}
+
+
+/* Player icons */
+
+.player-icon {
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    margin-right: 14px;
+
+    font-size: 25px;
+
+    background: #FFD166;
+
+    
+}
+
+
+/* Player 2 icon */
+
+.player-two .player-icon {
+    background: #EF476F;
+
+}
+
+
+/* Player information */
+
+.player-info {
+    flex: 1;
+}
+
+.player-info h2 {
+    font-size: 16px;
+    letter-spacing: 2px;
+}
+
+/* Mirror the layout of Player 2 */
+.player-two {
+    flex-direction: row-reverse;
+    gap: 15px;
+}
+
+.player-two .player-info {
+    text-align: right;
+}
+
+.turn-label {
+    display: block;
+
+    margin-top: 5px;
+
+    font-size: 10px;
+
+    color: #777f9f;
+
+    letter-spacing: 1px;
+}
+
+.player-card.active .turn-label {
+    color: #48e0ff;
+}
+
+
+/* Score */
+
+.score {
+    text-align: center;
+}
+
+.score span {
+    display: block;
+
+    color: #858ca8;
+
+    font-size: 10px;
+}
+
+.score strong {
+    font-family: 'Bungee', shade;
+    font-size: 32px;
+    font-weight: normal;
+    color: #F5D76E;
+}
+.player-two .score strong {
+    color: #EF476F;
+}
+
+/* VS */
+
+.vs {
+    font-weight:900;
+
+    font-size: 20px;
+
+    color: #ffffff;
+
+    
+}
+
+
+/* =========================
+   GAME STATUS
+========================= */
+
+.game-status {
+    display: flex;
+    justify-content: center;
+
+    gap: 50px;
+
+    margin-bottom: 20px;
+
+    text-align: center;
+}
+
+.status-item span {
+    display: block;
+
+    font-size: 10px;
+
+    color: #777f9f;
+
+    letter-spacing: 2px;
+}
+
+.status-item strong {
+    display: block;
+
+    margin-top: 3px;
+
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: #f9f9f9;
+}
+
+
+/* =========================
+   GAME BOARD
+========================= */
+
+.game-board {
+    width: 380px;
+
+    margin: 0 auto;
+
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 12px;
+
+    perspective: 1200px;
+}
+
+
+/* =========================
+   CARD
+========================= */
+
+.card {
+    width: 85px;
+    height: 85px;
+
+    cursor: pointer;
+
+    perspective: 1000px;
+}
+
+.card-inner {
+    width: 100%;
+    height: 100%;
+
+    position: relative;
+
+    transform-style: preserve-3d;
+
+    transition:
+        transform 0.6s cubic-bezier(.4,.2,.2,1);
+
+}
+
+
+/* Flip */
+
+.card.flipped .card-inner,
+.card.matched .card-inner {
+    transform: rotateY(180deg);
+}
+
+
+/* =========================
+   CARD SIDES
+========================= */
+
+.card-front,
+.card-back {
+
+    position: absolute;
+
+    width: 100%;
+    height: 100%;
+
+    border-radius: 14px;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    backface-visibility: hidden;
+
+    box-shadow:
+        0 8px 20px rgba(0,0,0,0.3);
+
+}
+
+
+/* Front */
+
+.card-front {
+
+    background: #D6B84C;
+    color: #2B2118;
+
+    border: 5px solid rgb(255, 255, 255);
+
+    font-size: 32px;
+
+    box-shadow:
+        0 0 15px rgba(70,130,255,0.25);
+
+    transition: 0.25s ease;
+}
+
+
+/* Question mark */
+
+.card-front::before {
+    content: "?";
+
+    font-size: 30px;
+
+    font-weight: bold;
+
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.353);
+}
+
+
+/* Back */
+
+.card-back {
+
+    transform: rotateY(180deg);
+
+    font-size: 32px;
+
+    font-weight: bold;
+
+    color: white;
+
+    border: 5px solid rgb(255, 255, 255);
+
+
+    box-shadow:
+        0 0 15px rgba(23, 35, 62, 0.25);
+
+    text-shadow:
+        0 0 10px rgba(255,255,255,0.8);
+}
+
+
+/* =========================
+   CARD HOVER
+========================= */
+
+.card:not(.flipped):not(.matched):hover {
+    transform: translateY(-5px) scale(1.04);
+}
+
+.card:not(.flipped):not(.matched):hover .card-front {
+
+    box-shadow:
+    0 4px 10px rgba(0, 0, 0, 0.35);
+}
+
+
+/* =========================
+   MATCH ANIMATION
+========================= */
+
+.card.matched .card-back {
+
+
+        background: #085201;
+    box-shadow:
+        0 0 10px rgba(95, 143, 91, 0.5),
+        0 0 20px rgba(95, 143, 91, 0.25);
+
+    animation: matchedGlow 0.7s ease;
+}
+
+
+@keyframes matchedGlow {
+
+    0% {
+        transform: rotateY(180deg) scale(1);
+    }
+
+    40% {
+        transform: rotateY(180deg) scale(1.15);
+    }
+
+    100% {
+        transform: rotateY(180deg) scale(1);
+    }
+
+}
+
+
+/* =========================
+   MISMATCH SHAKE
+========================= */
+
+.card.mismatch {
+    animation: shake 0.45s ease;
+}
+
+@keyframes shake {
+
+    0%, 100% {
+        transform: translateX(0);
+    }
+
+    20% {
+        transform: translateX(-7px);
+    }
+
+    40% {
+        transform: translateX(7px);
+    }
+
+    60% {
+        transform: translateX(-5px);
+    }
+
+    80% {
+        transform: translateX(5px);
+    }
+
+}
+
+
+/* =========================
+   BUTTONS
+========================= */
+
+.controls {
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 15px;
+
+    margin-top: 25px;
+}
+
+
+.game-btn {
+
+    border: none;
+
+    padding: 13px 25px;
+
+    border-radius: 10px;
+
+     font-family: 'Lilita One', cursive;
+    font-size: 17px;
+    letter-spacing: 1px;
+
+    color: white;
+
+    cursor: pointer;
+
+    transition: 0.25s ease;
+}
+
+
+.start-btn {
+  
+
+   background: #E07A3F;
+    color: #FFFFFF;
+    box-shadow: 0 4px 0 #A94F24;
+}
+
+
+.restart-btn {
+    background: #D6B84C;
+    color: #2B2118;
+    box-shadow: 0 4px 0 #9E842F;
+}
+
+.game-btn:hover {
+    filter: brightness(1.1);
+    transform: translateY(-2px);
+}
+
+
+
+
+
+.game-btn:active {
+
+    transform: scale(0.96);
+
+}
+
+
+/* =========================
+   WINNER OVERLAY
+========================= */
+
+.winner-overlay {
+
+    position: fixed;
+
+    inset: 0;
+
+    display: none;
+
+    justify-content: center;
+    align-items: center;
+
+    background: rgba(5,5,20,0.75);
+
+    backdrop-filter: blur(8px);
+
+    z-index: 100;
+}
+
+
+.winner-overlay.show {
+    display: flex;
+
+    animation: fadeIn 0.4s ease;
+}
+
+
+@keyframes fadeIn {
+
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+
+}
+
+
+/* Winner box */
+
+.winner-box {
+
+    width: 360px;
+
+    padding: 40px;
+
+    text-align: center;
+
+     background: #24221D;
+    border: 3px solid #D6B84C;
+    border-radius: 20px;
+
+    animation: winnerPop 0.5s cubic-bezier(.2,.8,.2,1);
+}
+
+
+@keyframes winnerPop {
+
+    from {
+        transform: scale(0.6);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+}
+
+
+.trophy {
+
+    font-size: 60px;
+
+    margin-bottom: 10px;
+
+    animation: trophyBounce 1s infinite alternate;
+}
+
+
+@keyframes trophyBounce {
+
+    from {
+        transform: translateY(0) rotate(-5deg);
+    }
+
+    to {
+        transform: translateY(-8px) rotate(5deg);
+    }
+
+}
+
+
+.winner-box h2 {
+    font-family: 'Bungee', cursive;
+    font-size: 28px;
+    font-weight: normal;
+    color: #D6B84C;
+    letter-spacing: 1px;
+}
+
+#winner-title {
+    font-family: 'Lilita One', cursive;
+    font-size: 32px;
+    color: #D6B84C;
+}
+
+
+.winner-box p {
+
+    margin: 10px 0 25px;
+
+    color: #aeb4d0;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 650px) {
+
+    .game-container {
+        padding: 20px 10px;
+    }
+
+    .game-header h1 {
+        font-size: 30px;
+    }
+
+    .players {
+        gap: 5px;
+    }
+
+    .player-card {
+        padding: 10px;
+    }
+
+    .player-icon {
+        display: none;
+    }
+
+    .player-info h2 {
+        font-size: 12px;
+    }
+
+    .score strong {
+        font-size: 22px;
+    }
+
+    .game-board {
+        width: 330px;
+        gap: 8px;
+    }
+
+    .card {
+        width: 78px;
+        height: 78px;
+    }
+
+    .game-status {
+        gap: 25px;
+    }
+
+}
