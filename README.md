@@ -4,25 +4,25 @@ A simple and interactive browser-based **Memory Matching Game** built using HTML
 
 The goal is to find all matching pairs of cards with the minimum number of moves.
 
-## 🎮 Features
+##  Features
 
-- 🃏 Interactive card flipping
-- 🔀 Random card shuffling
-- 🎯 Match detection
-- 🔢 Move counter
-- 🏆 Winner detection
-- 🔄 Play Again / Restart functionality
-- ✨ Card flip animations
-- 📱 Responsive layout
+-  Interactive card flipping
+-  Random card shuffling
+-  Match detection
+-  Move counter
+-  Winner detection
+-  Play Again / Restart functionality
+-  Card flip animations
+-  Responsive layout
 
-## 🛠️ Technologies Used
+##  Technologies Used
 
 - HTML5
 - CSS3
 - JavaScript
 - DOM Manipulation
 
-## 🕹️ How to Play
+##  How to Play
 
 1. Click on any card to reveal its symbol.
 2. Click on another card to reveal the second symbol.
